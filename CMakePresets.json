@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "fedora",
+      "binaryDir": "${sourceDir}/build-fedora",
+      "cacheVariables": {
+        "TBB_DIR": "/usr/lib64/cmake/TBB"
+      }
+    }
+  ]
+}
