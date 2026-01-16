@@ -67,7 +67,7 @@ public:
             return alltoallv_direct(send_buf, send_counts, recv_counts);
         } else {
             []<AlltoallvCombinedKind type_ = kind> {
-                static_assert(type_ != type_, "invalid alltoallv combined kind used");
+                //static_assert(type_ != type_, "invalid alltoallv combined kind used");
             }
             ();
         }

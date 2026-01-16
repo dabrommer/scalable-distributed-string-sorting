@@ -157,7 +157,7 @@ public:
             auto const& str = strings_[i];
             auto const length = make_string_set().get_length(str);
             std::vector<Char> buf(length + 1, 0);
-            std::copy_n(str.string, length, buf.begin());
+            std::copy(str.string, str.string + length, buf.begin());
             return buf;
         } else {
             return std::vector<Char>(1, 0);

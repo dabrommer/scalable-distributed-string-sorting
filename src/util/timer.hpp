@@ -16,6 +16,7 @@
 #include <vector>
 
 #include <kamping/collectives/gather.hpp>
+#include <kamping/collectives/barrier.hpp>
 #include <kamping/environment.hpp>
 #include <kamping/mpi_ops.hpp>
 #include <kamping/named_parameters.hpp>
