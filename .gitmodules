@@ -6,7 +6,7 @@
 	url = https://github.com/ips4o/ips4o
 [submodule "external/RBC"]
 	path = external/RBC
-	url = https://github.com/MichaelAxtmann/RBC.git
+	url = https://github.com/dabrommer/RBC.git
 [submodule "external/kamping"]
 	path = external/kamping
 	url = https://github.com/kamping-site/kamping.git
