@@ -146,3 +146,21 @@ target_link_libraries(sort_caller kamping)
 target_link_libraries(sort_caller dss_base)
 target_link_libraries(sort_caller tlx)
 
+
+add_library(sort_caller_lib
+        src/executables/sort_caller.cpp
+        src/executables/common_cli.hpp
+)
+
+target_include_directories(sort_caller_lib PUBLIC
+        "${CMAKE_CURRENT_BINARY_DIR}/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/tlx"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/kamping"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/ips4o/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/RBC/include/RBC"
+)
+
+target_compile_options(sort_caller_lib PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
+target_link_libraries(sort_caller_lib PRIVATE kamping dss_base tlx)
+
