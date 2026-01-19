@@ -272,7 +272,7 @@ inline std::optional<std::vector<int>> send_duplicates(
     Communicator const& comm_global
 ) {
     auto any_global_dups = comm_global.allreduce_single(
-        kamping::send_buf({!duplicates.empty()}),
+        kamping::send_buf(!duplicates.empty()),
         kamping::op(std::logical_or<>{})
     );
 
@@ -282,7 +282,7 @@ inline std::optional<std::vector<int>> send_duplicates(
             kamping::send_counts(send_counts),
             kamping::send_displs(send_displs)
         );
-        return result.extract_recv_buffer();
+        return result;
     } else {
         return {};
     }
@@ -752,7 +752,7 @@ private:
             kamping::send_counts(send_counts),
             kamping::send_displs(send_displs)
         );
-        return result.extract_recv_buffer();
+        return result;
     }
 };
 

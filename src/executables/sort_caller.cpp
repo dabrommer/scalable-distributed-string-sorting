@@ -71,7 +71,7 @@ std::vector<CharType> run_sorter(std::vector<CharType>& to_sort, Communicator co
     return to_return;
 
 }
-
+/*
 int main() {
     kamping::Environment env;
     dss_mehnert::Communicator comm;
@@ -86,4 +86,4 @@ int main() {
     }
     std::cout << print << std::endl;
     return 0;
-}
+}*/

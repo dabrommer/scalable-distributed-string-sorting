@@ -456,7 +456,7 @@ inline size_t mpi_warmup(size_t const bytes_per_PE, dss_mehnert::Communicator co
     std::vector<unsigned char> random_data(bytes_per_PE * comm.size());
     std::generate(random_data.begin(), random_data.end(), [&] { return dist(gen); });
 
-    auto recv_data = comm.alltoall(kamping::send_buf(random_data)).extract_recv_buffer();
+    auto recv_data = comm.alltoall(kamping::send_buf(random_data));
 
     auto volatile sum = std::accumulate(recv_data.begin(), recv_data.end(), size_t{0});
     return sum;

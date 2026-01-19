@@ -16,7 +16,6 @@
 
 #include "mpi/alltoall_combined.hpp"
 #include "mpi/byte_encoder.hpp"
-#include "mpi/plugin_helpers.hpp"
 #include "sorter/distributed/permutation.hpp"
 #include "strings/stringcontainer.hpp"
 #include "util/measuringTool.hpp"
@@ -310,8 +309,8 @@ public:
 
 } // namespace _internal
 
-template <typename Comm>
-class AlltoallStringsPlugin : public kamping::plugins::PluginBase<Comm, AlltoallStringsPlugin> {
+    template <typename Comm, template <typename...> typename DefaultContainerType>
+class AlltoallStringsPlugin : public kamping::plugin::PluginBase<Comm, DefaultContainerType, AlltoallStringsPlugin> {
 public:
     template <AlltoallStringsConfig config, typename Permutation, typename StringSet>
     void alltoall_strings(
