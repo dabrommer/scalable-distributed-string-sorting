@@ -82,7 +82,17 @@ message(STATUS "Run: ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${MPIEXEC_MAX_NUMPROCS} 
 set(TLX_USE_LTO ON)
 add_subdirectory(external/tlx)
 
-add_subdirectory(external/kamping)
+if (PROJECT_IS_TOP_LEVEL)
+  include(FetchContent)
+
+  FetchContent_Declare(
+          kamping
+          GIT_REPOSITORY https://github.com/kamping-site/kamping.git
+          GIT_TAG v0.2.1
+  )
+
+  FetchContent_MakeAvailable(kamping)
+endif()
 
 # IPS40 doesn't compile wihtout linking to TBB
 set(IPS4O_DISABLE_PARALLEL OFF)
@@ -102,7 +112,7 @@ target_include_directories(dss_base PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 target_include_directories(dss_base PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(dss_base PRIVATE kamping)
+target_link_libraries(dss_base PRIVATE kamping::kamping)
 target_link_libraries(dss_base PUBLIC tlx)
 target_link_libraries(dss_base PRIVATE MPI::MPI_CXX)
 target_link_libraries(dss_base PUBLIC ips4o)
@@ -118,7 +128,7 @@ target_include_directories(distributed_sorter PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 target_compile_options(distributed_sorter PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
-target_link_libraries(distributed_sorter kamping)
+target_link_libraries(distributed_sorter kamping::kamping)
 target_link_libraries(distributed_sorter dss_base)
 target_link_libraries(distributed_sorter tlx)
 
@@ -130,7 +140,7 @@ target_include_directories(space_efficient_sorter PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 target_compile_options(space_efficient_sorter PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
-target_link_libraries(space_efficient_sorter kamping)
+target_link_libraries(space_efficient_sorter kamping::kamping)
 target_link_libraries(space_efficient_sorter dss_base)
 target_link_libraries(space_efficient_sorter tlx)
 
@@ -142,7 +152,7 @@ target_include_directories(sort_caller PRIVATE
         "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 target_compile_options(sort_caller PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
-target_link_libraries(sort_caller kamping)
+target_link_libraries(sort_caller kamping::kamping)
 target_link_libraries(sort_caller dss_base)
 target_link_libraries(sort_caller tlx)
 
@@ -156,11 +166,10 @@ target_include_directories(sort_caller_lib PUBLIC
         "${CMAKE_CURRENT_BINARY_DIR}/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/external/tlx"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/kamping"
         "${CMAKE_CURRENT_SOURCE_DIR}/external/ips4o/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/external/RBC/include/RBC"
 )
 
 target_compile_options(sort_caller_lib PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
-target_link_libraries(sort_caller_lib PRIVATE kamping dss_base tlx)
+target_link_libraries(sort_caller_lib PRIVATE kamping::kamping dss_base tlx)
 
