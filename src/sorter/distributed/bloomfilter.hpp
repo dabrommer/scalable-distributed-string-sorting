@@ -315,7 +315,7 @@ public:
             measuring_tool_.add(candidates.size(), "bloomfilter_num_candidates");
             measuring_tool_.start("bloomfilter_allreduce");
             auto const all_empty = comms.comm_root().allreduce_single(
-                kamping::send_buf({candidates.empty()}),
+                kamping::send_buf(candidates.empty()),
                 kamping::op(std::logical_and<>{})
             );
             measuring_tool_.stop("bloomfilter_allreduce");

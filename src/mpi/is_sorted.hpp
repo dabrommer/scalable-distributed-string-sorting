@@ -340,7 +340,7 @@ public:
             std::cout << "strings are not lexicographically increasing\n";
             is_sorted = false;
         }
-        return comm.allreduce_single(send_buf({is_sorted}), op(ops::logical_and<>{}));
+        return comm.allreduce_single(send_buf(is_sorted), op(ops::logical_and<>{}));
     }
 
     template <typename Subcommunicators>
@@ -353,7 +353,7 @@ public:
         using namespace kamping;
         auto const& comm = comms.comm_root();
         auto is_complete = check_permutation_complete(permutation, input_container_.size(), comm);
-        return comm.allreduce_single(send_buf({is_complete}), op(ops::logical_and<>{}));
+        return comm.allreduce_single(send_buf(is_complete), op(ops::logical_and<>{}));
     }
 
 private:
