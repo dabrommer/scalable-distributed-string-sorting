@@ -82,24 +82,29 @@ message(STATUS "Run: ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${MPIEXEC_MAX_NUMPROCS} 
 set(TLX_USE_LTO ON)
 add_subdirectory(external/tlx)
 
-if (PROJECT_IS_TOP_LEVEL)
-  include(FetchContent)
 
-  FetchContent_Declare(
-          kamping
-          GIT_REPOSITORY https://github.com/kamping-site/kamping.git
-          GIT_TAG v0.2.1
-  )
+include(FetchContent)
 
-  FetchContent_MakeAvailable(kamping)
-endif()
+FetchContent_Declare(
+	kamping
+	GIT_REPOSITORY https://github.com/kamping-site/kamping.git
+	GIT_TAG v0.2.1
+)
+  
+FetchContent_Declare(
+	RBC
+	GIT_REPOSITORY https://github.com/dabrommer/RBC.git
+ 	GIT_TAG dd02769dd403819dff274e4d795bcd3399a7cbf0
+)
+  
+FetchContent_MakeAvailable(kamping RBC)
+
 
 # IPS40 doesn't compile wihtout linking to TBB
 set(IPS4O_DISABLE_PARALLEL OFF)
 add_subdirectory(external/ips4o)
 
 set(CLUSTER_TYPE "SUPERMUCPHASE2")
-add_subdirectory(external/RBC)
 
 configure_file("options.hpp.in" "include/options.hpp")
 
