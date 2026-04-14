@@ -80,7 +80,6 @@ find_package(MPI REQUIRED)
 message(STATUS "Run: ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${MPIEXEC_MAX_NUMPROCS} ${MPIEXEC_PREFLAGS} EXECUTABLE ${MPIEXEC_POSTFLAGS} ARGS")
 
 set(TLX_USE_LTO ON)
-add_subdirectory(external/tlx)
 
 
 include(FetchContent)
@@ -96,13 +95,25 @@ FetchContent_Declare(
 	GIT_REPOSITORY https://github.com/dabrommer/RBC.git
  	GIT_TAG dd02769dd403819dff274e4d795bcd3399a7cbf0
 )
+
+FetchContent_Declare(ips4o
+        GIT_REPOSITORY  https://github.com/mschimek/ips4o.git
+        GIT_TAG         eb30352
+        SYSTEM
+)
+
+FetchContent_Declare(tlx
+        GIT_REPOSITORY  https://github.com/tlx/tlx.git
+        GIT_TAG         cf83363
+        SYSTEM
+)
+
   
-FetchContent_MakeAvailable(kamping RBC)
+FetchContent_MakeAvailable(kamping RBC ips4o tlx )
 
 
 # IPS40 doesn't compile wihtout linking to TBB
 set(IPS4O_DISABLE_PARALLEL OFF)
-add_subdirectory(external/ips4o)
 
 set(CLUSTER_TYPE "SUPERMUCPHASE2")
 
@@ -157,9 +168,6 @@ add_library(sort_caller_lib
 target_include_directories(sort_caller_lib PUBLIC
         "${CMAKE_CURRENT_BINARY_DIR}/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/tlx"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/ips4o/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/RBC/include/RBC"
 )
 
 target_compile_options(sort_caller_lib PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
