@@ -160,16 +160,18 @@ target_link_libraries(space_efficient_sorter kamping::kamping)
 target_link_libraries(space_efficient_sorter dss_base)
 target_link_libraries(space_efficient_sorter tlx)
 
-add_library(sort_caller_lib
-        src/executables/sort_caller.cpp
+add_library(dss_lib
+        src/dss/dss.hpp
         src/executables/common_cli.hpp
 )
 
-target_include_directories(sort_caller_lib PUBLIC
+target_include_directories(dss_lib PUBLIC
         "${CMAKE_CURRENT_BINARY_DIR}/include"
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
-target_compile_options(sort_caller_lib PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
-target_link_libraries(sort_caller_lib PRIVATE kamping::kamping dss_base tlx)
+target_compile_options(dss_lib PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
+target_link_libraries(dss_lib PRIVATE kamping::kamping dss_base tlx)
+set_target_properties(dss_lib PROPERTIES OUTPUT_NAME dss)
+add_library(dss::dss ALIAS dss_lib)
 
