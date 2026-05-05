@@ -10,6 +10,9 @@
 // The used types mimic a call to distributed_sorter with the parameters -i 5 -a 0 -l -p -k 2 -I
 template <typename CharType, typename Communicator>
 std::vector<CharType> run_sorter(std::vector<CharType>& to_sort, Communicator const& comm) {
+    auto& timer = kamping::measurements::timer();
+    timer.synchronize_and_start("Prepare string sorter");
+
     using StringSet = dss_mehnert::StringSet<CharType, dss_mehnert::Length>;
     using PartitionPolicy = dss_mehnert::MergeSortPartitionPolicy<CharType>;
 
@@ -49,8 +52,13 @@ std::vector<CharType> run_sorter(std::vector<CharType>& to_sort, Communicator co
     };
 
     dss_schimek::StringLcpContainer<StringSet> container(std::move(to_sort));
+    timer.stop();
 
+    timer.synchronize_and_start("Run string sorter");
     merge_sort.sort(container, comms);
+    timer.stop();
+
+    timer.synchronize_and_start("Retrieve sorted string");
 
     // Retrieve sorted strings
     auto sorted_strings = std::move(container.release_strings());
@@ -66,7 +74,7 @@ std::vector<CharType> run_sorter(std::vector<CharType>& to_sort, Communicator co
         to_return.push_back(0);
 
     }
-
+    timer.stop();
     return to_return;
 }
 
