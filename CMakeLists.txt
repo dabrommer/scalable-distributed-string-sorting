@@ -10,7 +10,7 @@ include(FetchContent)
 FetchContent_Declare(
   kamping
   GIT_REPOSITORY https://github.com/kamping-site/kamping.git
-  GIT_TAG fc44b4e #3bb24ce
+  GIT_TAG v0.2.1
   SYSTEM EXCLUDE_FROM_ALL)
 
 FetchContent_Declare(tlx
@@ -132,7 +132,7 @@ target_include_directories(dss_base PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 target_include_directories(dss_base PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(dss_base PRIVATE kamping)
+target_link_libraries(dss_base PRIVATE kamping::kamping)
 target_link_libraries(dss_base PUBLIC tlx)
 target_link_libraries(dss_base PRIVATE MPI::MPI_CXX)
 target_link_libraries(dss_base PUBLIC ips4o)
@@ -148,7 +148,7 @@ target_include_directories(distributed_sorter PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 target_compile_options(distributed_sorter PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
-target_link_libraries(distributed_sorter kamping)
+target_link_libraries(distributed_sorter kamping::kamping)
 target_link_libraries(distributed_sorter dss_base)
 target_link_libraries(distributed_sorter tlx)
 
@@ -160,7 +160,7 @@ target_include_directories(space_efficient_sorter PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 target_compile_options(space_efficient_sorter PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
-target_link_libraries(space_efficient_sorter kamping)
+target_link_libraries(space_efficient_sorter kamping::kamping)
 target_link_libraries(space_efficient_sorter dss_base)
 target_link_libraries(space_efficient_sorter tlx)
 
