@@ -73,6 +73,9 @@ message(STATUS "Shared Memory Enabled: ${USE_SHARED_MEMORY_SORT}")
 option(USE_RQUICK_SORT "sort using RQuick alogrithm" Off)
 message(STATUS "RQuick Sort Enabled: ${USE_RQUICK_SORT}")
 
+option(DSS_BUILD_EXAMPLES "build example programs in examples/" Off)
+message(STATUS "Examples Enabled: ${DSS_BUILD_EXAMPLES}")
+
 list(APPEND
   DSS_MEHNERT_WARNING_FLAGS
   "-Werror"
@@ -128,7 +131,7 @@ add_library(dss_base)
 set_target_properties(dss_base PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_options(dss_base PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
 
-target_include_directories(dss_base PRIVATE
+target_include_directories(dss_base PUBLIC
   "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 target_include_directories(dss_base PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -176,4 +179,8 @@ target_compile_options(space_efficient_sorter PRIVATE ${DSS_MEHNERT_WARNING_FLAG
 target_link_libraries(space_efficient_sorter kamping::kamping)
 target_link_libraries(space_efficient_sorter dss_base)
 target_link_libraries(space_efficient_sorter tlx)
+
+if(DSS_BUILD_EXAMPLES)
+  add_subdirectory(examples)
+endif()
 
