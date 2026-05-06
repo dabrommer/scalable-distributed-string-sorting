@@ -15,6 +15,7 @@
 #include <tuple>
 #include <vector>
 
+#include <kamping/collectives/barrier.hpp>
 #include <kamping/collectives/gather.hpp>
 #include <kamping/environment.hpp>
 #include <kamping/mpi_ops.hpp>
