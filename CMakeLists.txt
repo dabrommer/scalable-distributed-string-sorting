@@ -140,6 +140,19 @@ target_link_libraries(dss_base PUBLIC rbc)
 
 add_subdirectory(src)
 
+add_library(dss STATIC src/dss/dss.cpp)
+add_library(dss::dss ALIAS dss)
+
+target_include_directories(dss
+  PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/src
+  PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/include)
+
+target_compile_options(dss PRIVATE ${DSS_MEHNERT_WARNING_FLAGS})
+
+target_link_libraries(dss
+  PUBLIC  dss_base
+  PRIVATE kamping::kamping MPI::MPI_CXX)
+
 add_executable(distributed_sorter
   src/executables/distributed_sorter.cpp
   src/executables/common_cli.hpp)
