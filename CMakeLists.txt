@@ -1,17 +1,47 @@
-cmake_minimum_required(VERSION 3.13)
-
-find_package(TBB REQUIRED)
-find_program(CCACHE_PROGRAM ccache)
-if(CCACHE_PROGRAM)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
-endif()
+cmake_minimum_required(VERSION 3.25)
+project(distributed_string_sorting)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
-project(distributed_string_sorting)
+include(FetchContent)
+FetchContent_Declare(
+  kamping
+  GIT_REPOSITORY https://github.com/kamping-site/kamping.git
+  GIT_TAG fc44b4e #3bb24ce
+  SYSTEM EXCLUDE_FROM_ALL)
+
+FetchContent_Declare(tlx
+  GIT_REPOSITORY  https://github.com/tlx/tlx.git
+  GIT_TAG         cf83363
+  SYSTEM EXCLUDE_FROM_ALL
+)
+
+set(CLUSTER_TYPE "SUPERMUCPHASE2")
+FetchContent_Declare(rbc
+  GIT_REPOSITORY  https://github.com/mschimek/RBC.git
+  GIT_TAG         e5556a3
+  SYSTEM EXCLUDE_FROM_ALL
+)
+FetchContent_MakeAvailable(kamping tlx rbc)
+
+set(IPS4O_DISABLE_PARALLEL ON)
+FetchContent_Declare(ips4o
+  GIT_REPOSITORY  https://github.com/mschimek/ips4o.git
+  GIT_TAG         eb30352
+  SYSTEM EXCLUDE_FROM_ALL
+)
+FetchContent_MakeAvailable(ips4o)
+
+
+
+find_package(TBB REQUIRED)
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
@@ -79,17 +109,17 @@ message(STATUS "Build Flags: ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_
 find_package(MPI REQUIRED)
 message(STATUS "Run: ${MPIEXEC} ${MPIEXEC_NUMPROC_FLAG} ${MPIEXEC_MAX_NUMPROCS} ${MPIEXEC_PREFLAGS} EXECUTABLE ${MPIEXEC_POSTFLAGS} ARGS")
 
-set(TLX_USE_LTO ON)
-add_subdirectory(external/tlx)
+#set(TLX_USE_LTO ON)
+#add_subdirectory(external/tlx)
 
-add_subdirectory(external/kamping)
+#add_subdirectory(external/kamping)
 
 # IPS40 doesn't compile wihtout linking to TBB
 set(IPS4O_DISABLE_PARALLEL OFF)
-add_subdirectory(external/ips4o)
+#add_subdirectory(external/ips4o)
 
-set(CLUSTER_TYPE "SUPERMUCPHASE2")
-add_subdirectory(external/RBC)
+#set(CLUSTER_TYPE "SUPERMUCPHASE2")
+#add_subdirectory(external/RBC)
 
 configure_file("options.hpp.in" "include/options.hpp")
 
